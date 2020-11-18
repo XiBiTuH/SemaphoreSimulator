@@ -7,13 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Connect" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="128" Height="29" Click="Button_Click"/>
-        <Button Content="&#xD;&#xA;Normal Mode&#xD;&#xA;" HorizontalAlignment="Left" Margin="343,138,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click_1"/>
-        <Button Content="&#xA;Automatic Mode&#xA;" HorizontalAlignment="Left" Margin="343,261,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click_1"/>
-        <TextBox HorizontalAlignment="Left" Height="55" TextWrapping="Wrap" Text=" Modes" VerticalAlignment="Top" Width="140" Margin="333,30,0,0" FontSize="36"/>
-        <TextBox HorizontalAlignment="Left" Height="55" TextWrapping="Wrap" Text=" Peões" VerticalAlignment="Top" Width="120" Margin="634,30,0,0" FontSize="36"/>
-        <Button Content="Peões" HorizontalAlignment="Left" Margin="648,176,0,0" VerticalAlignment="Top" Width="95" Height="66" Click="Button_Click_2"/>
-        <Button Content="Policia" HorizontalAlignment="Left" Margin="33,329,0,0" VerticalAlignment="Top" Width="105" Click="Button_Click_3" Height="58" Background="#FFD6D9FF"/>
-
+        
     </Grid>
 </Window>
