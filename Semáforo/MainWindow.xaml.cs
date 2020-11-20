@@ -52,6 +52,7 @@ namespace Semáforo
         int valores_sensores = -1;
         DispatcherTimer timer_sensores;
         DispatcherTimer tim_policia;
+        bool[] sensores_status = new bool[] { false, false, false, false, false };
 
 
 
@@ -109,6 +110,8 @@ namespace Semáforo
             timer_sensores = new DispatcherTimer();
             timer_sensores.Interval = TimeSpan.FromSeconds(5);
             timer_sensores.Tick += sensores;
+            timer_sensores.Start();
+
 
 
 
@@ -126,8 +129,140 @@ namespace Semáforo
             maintence(2);
         }
 
+
+
+        /*
+                            //Caso já esteja verde para os peoes
+                            if (this.cycle_flag != 1)
+                            
+                                tim.Interval = TimeSpan.FromSeconds(5);
+
+                                this.cycle_flag = 0;
+
+                            }
+
+                            if (mode == 2)
+                            {
+                                timer_sensores.Stop();
+                                maintence(0);
+                                timer_sensores.Start();
+                                valores_sensores = 0;
+                            }
+
+
+                            break;
+                            */
+
+
+        //Listener dos sensores
         private void sensores(object sender, EventArgs e)
         {
+            bool aux_sensor;
+
+            if (valores_sensores != K8055.ReadAllDigital())
+            {
+
+                aux_sensor = false;
+
+                for (int i=1;i < 4; i+=2)
+                {
+
+                    if(sensores_status[i] && sensores_status[i + 1])
+                    {
+                        aux_sensor = true;
+                    }
+
+                    Debug.WriteLine("------------");
+                    Debug.WriteLine("xp");
+
+                    if (sensores_status[i] != K8055.ReadDigitalChannel(i))
+                        sensores_status[i] = !sensores_status[i];
+                    
+
+                    if (sensores_status[i + 1] != K8055.ReadDigitalChannel(i+1))
+                        sensores_status[i + 1] = !sensores_status[i + 1];
+
+
+                    Debug.WriteLine(sensores_status[i]);
+                    Debug.WriteLine(sensores_status[i + 1]);
+
+
+                    
+
+                    if (sensores_status[i] != sensores_status[i + 1] && !aux_sensor)
+                    {
+                        Debug.WriteLine("45");
+
+                        if (i == 1)
+                        {
+                            //Se estivermos no modo automatico
+                            if(mode == 2)
+                            {
+
+                                //Abre os automoveis
+                                Debug.WriteLine("Abri os automoveis");
+                                Debug.WriteLine("------------");
+
+                                maintence(1);
+
+                            }
+
+                        }
+                        else
+                        {
+                            //Abre os peões
+                            if(mode == 1)
+                            {
+
+                            }
+                            else
+                            {
+                                Debug.WriteLine("??????????");
+                                Debug.WriteLine("Abri os peões");
+                                Debug.WriteLine("??????????");
+                                maintence(1);
+                                Debug.WriteLine("??????????");
+                                Debug.WriteLine("Fechei os peões");
+                                Debug.WriteLine("??????????");
+                            }
+
+                        }
+
+                    }
+                    else if(!sensores_status[i])
+                    {
+                        if(i == 1)
+                        {
+
+                            if(mode == 2)
+                            {
+                                Debug.WriteLine("Fechei os automoveis");
+                                maintence(0);
+                            }
+                                
+                        }
+
+                        if(i == 3)
+                        {
+
+                        }
+                    }
+
+
+                }
+            }
+
+
+
+
+                valores_sensores = K8055.ReadAllDigital();
+            }
+
+
+
+
+
+            /*
             //Verificar se houve alteração nos sensores
             if (valores_sensores != K8055.ReadAllDigital())
             {
@@ -163,7 +298,7 @@ namespace Semáforo
             }
             
 
-        }
+        }*/
 
         
         //Verificamos as horas
@@ -208,6 +343,7 @@ namespace Semáforo
                     break;
 
                 case  0:                          // In this particular case, we need to consider some situations [B IS GREEN | OTHERS ARE RED]
+                    await Task.Delay(5000);
                     K8055.ClearDigitalChannel(4); // Clear the channel
                     K8055.SetDigitalChannel(5);   // Turn the semaphore B yellow, the others stay RED
                     await Task.Delay(2000);       // Delay of 1.2 seconds
@@ -219,9 +355,11 @@ namespace Semáforo
                     K8055.ClearDigitalChannel(8); // Clear the channel
                     K8055.SetDigitalChannel(7);   // Semaphore D --> GREEN
                     this.cycle_flag = 1;          // Update flag --> 1
+                    await Task.Delay(10000);
                     break;
 
                 case  1:                          // In this particular case, we need to consider some situations [B IS RED | OTHERS ARE GREEN]
+                    await Task.Delay(5000);
                     K8055.ClearDigitalChannel(1); // Clear the channel
                     K8055.SetDigitalChannel(2);   // Turn the semaphore A yellow 
                     K8055.ClearDigitalChannel(7); // Clear the channel
@@ -233,6 +371,7 @@ namespace Semáforo
                     K8055.ClearDigitalChannel(6); // Clear the channel
                     K8055.SetDigitalChannel(4);   // Semaphore B --> GREEN
                     this.cycle_flag = 0;          // Update flag --> 0
+                    await Task.Delay(20000);
                     break;
 
                 default:                          // Blink the semaphores A and B, D must have nothing
@@ -271,7 +410,7 @@ namespace Semáforo
 
         }
 
-
+        
         //Botão da policia
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -322,28 +461,11 @@ namespace Semáforo
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
 
-            if (this.cycle_flag != 1)
-            {
-
-                tim.Interval = TimeSpan.FromSeconds(5);
-
-                this.cycle_flag = 0;
-
-            }
-
-            if(mode == 2)
-            {
-                await Task.Delay(2000);
-                timer_sensores.Stop();
-                maintence(0);
-                await Task.Delay(10000);
-                timer_sensores.Start();
-                valores_sensores = 0;
-            }
+            
 
             
 
-
+            
         }
 
 
@@ -353,6 +475,8 @@ namespace Semáforo
             mode = 2;
             timer_sensores.Start();
             tim.Stop();
+            maintence(0);
+
 
         }
     }
