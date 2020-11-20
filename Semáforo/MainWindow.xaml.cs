@@ -49,7 +49,9 @@ namespace Semáforo
         int mode = 1;   //Default 1
         bool policia = false;
         DispatcherTimer tim;
-        int prev_sensores = -1;
+        int valores_sensores = -1;
+        DispatcherTimer timer_sensores;
+        DispatcherTimer tim_policia;
 
 
 
@@ -81,15 +83,21 @@ namespace Semáforo
 
 
 
-            //Timer relativamente ao semáforo temporário
+            //Timer relativamente ao semáforo temporário - corre a cada 20 segundos
             tim = new DispatcherTimer();
             tim.Interval = TimeSpan.FromSeconds(20);
             tim.Tick += semaforo_temporario;
             tim.Start();
 
 
+            //Timer relativamente á policia - Intermitente
+            tim_policia = new DispatcherTimer();
+            tim_policia.Interval = TimeSpan.FromSeconds(4);
+            tim_policia.Tick += policia_intermitente;
 
-            //Timer relativamente ao semáforo temporário - corre a cada segundo
+
+
+            //Timer que está sempre a verificar as horas - corre a cada segundo
             DispatcherTimer timer_verificar_horas = new DispatcherTimer();
             timer_verificar_horas.Interval = TimeSpan.FromSeconds(1);
             timer_verificar_horas.Tick += verifica_horas;
@@ -97,11 +105,12 @@ namespace Semáforo
 
 
 
-            //Timer relativamente ao semáforo temporário - corre a cada segundo
-            DispatcherTimer timer_sensores = new DispatcherTimer();
-            timer_sensores.Interval = TimeSpan.FromSeconds(1);
+            //Verifica se houve alguma alteração nos sensores
+            timer_sensores = new DispatcherTimer();
+            timer_sensores.Interval = TimeSpan.FromSeconds(5);
             timer_sensores.Tick += sensores;
-            timer_sensores.Start();
+
+
 
             InitializeComponent();
             // Here, we just need to open the device
@@ -112,56 +121,56 @@ namespace Semáforo
 
         }
 
-        private void sensores(object sender, EventArgs e)
+        private void policia_intermitente(object sender, EventArgs e)
         {
-
-            //Verificar o modo do semáforo
-            if(mode == 2)
-            {
-                //Verificar se houve alteração nos sensores
-                if (K8055.ReadAllDigital() != prev_sensores)
-                {
-
-                    Debug.WriteLine(K8055.ReadDigitalChannel(1));
-                    Debug.WriteLine(K8055.ReadDigitalChannel(0));
-
-                    //Se sim, verificamos se foi nos que queremos
-                    if (K8055.ReadDigitalChannel(1) || K8055.ReadDigitalChannel(0))
-                    {
-                        maintence(1);
-                    }
-                    //Caso contrário, os peões podem passar
-                    else
-                    {
-                        maintence(0);
-                    }
-
-                    prev_sensores = K8055.ReadAllDigital();
-
-                }
-            }
+            maintence(2);
         }
 
+        private void sensores(object sender, EventArgs e)
+        {
+            //Verificar se houve alteração nos sensores
+            if (valores_sensores != K8055.ReadAllDigital())
+            {
+                switch (K8055.ReadAllDigital())
+                {
 
+                    //Meter os peoões com prioridade ( Nenhum carro )
+                    case 0:
+                        if (this.cycle_flag != 1)
+                        {
+                            maintence(0);
+                        }
+                        this.cycle_flag = 0;
+                        break;
+
+
+                      
+                    //Meter o sinal B verde para os automoveis
+                    case 1:
+                    case 2:
+                    case 3:
+
+                        
+                        if(valores_sensores == 0)
+                        {
+                            maintence(1);
+                        }
+                        this.cycle_flag = 1;
+                        break;
+
+                }
+                valores_sensores = K8055.ReadAllDigital();
+            }
+            
+
+        }
+
+        
         //Verificamos as horas
         private void verifica_horas(object sender, EventArgs e)
         {
 
-            //Verificamo se estamos dentro da 00:00 e as 06:00 
-            if (check_Time() || policia)
-            {
-                this.cycle_flag = 2;
-            }
-
-            //Caso não, mudamos a flag se estiver a 2, senão fica a mesma
-            else
-            {
-                if (this.cycle_flag == 2)
-                {
-                    this.cycle_flag = -1;
-                }
-            }
-
+            
         }
 
 
@@ -235,22 +244,6 @@ namespace Semáforo
                     K8055.SetDigitalChannel(2);
                     await Task.Delay(2000);       // Delay of 2
                     K8055.ClearAllDigital();
-                    await Task.Delay(2000);       // Delay of 2 
-                    K8055.SetDigitalChannel(5);
-                    K8055.SetDigitalChannel(2);
-                    await Task.Delay(2000);
-                    K8055.ClearAllDigital();
-                    await Task.Delay(2000);       // Delay of 2 
-                    K8055.SetDigitalChannel(5);
-                    K8055.SetDigitalChannel(2);
-                    await Task.Delay(2000);
-                    K8055.ClearAllDigital();
-                    await Task.Delay(2000);       // Delay of 2
-                    K8055.SetDigitalChannel(5);
-                    K8055.SetDigitalChannel(2);
-                    await Task.Delay(2000);       // Delay of 2
-                    K8055.ClearAllDigital();
-
                     break;
             }
             
@@ -266,22 +259,69 @@ namespace Semáforo
         }
 
 
-        //modo Automático
+        //Botão de Modo Normal
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //K8055.CloseDevice(); //Closes communication with the K8055
             mode = 1;
+            tim.Start();
+            timer_sensores.Stop();
+
 
 
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+
+        //Botão da policia
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
+
             policia = !policia;
+
+            //Fica intermitente
+            if (policia)
+            {
+                tim_policia.Start();
+                maintence(2);
+                timer_sensores.Stop();
+                tim.Stop();
+
+
+            }
+
+            //Caso o botão seja desligado
+            else
+            {
+                
+                tim_policia.Stop();
+                await Task.Delay(4000);
+
+
+                if (mode == 1)
+                {
+                    maintence(-1);
+                    tim.Start();
+                    
+                }
+
+                else
+                {
+                    maintence(-1);
+                    timer_sensores.Start();
+                    valores_sensores = -2;
+
+                }
+            }
+    
+
+
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+
+        //Botão de Peão
+        private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
+
             if (this.cycle_flag != 1)
             {
 
@@ -291,12 +331,28 @@ namespace Semáforo
 
             }
 
+            if(mode == 2)
+            {
+                await Task.Delay(2000);
+                timer_sensores.Stop();
+                maintence(0);
+                await Task.Delay(10000);
+                timer_sensores.Start();
+                valores_sensores = 0;
+            }
+
+            
+
 
         }
 
+
+        //Botõ de Modo Automático
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             mode = 2;
+            timer_sensores.Start();
+            tim.Stop();
 
         }
     }
