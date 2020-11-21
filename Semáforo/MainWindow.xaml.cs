@@ -53,7 +53,7 @@ namespace Semáforo
         int valores_sensores = -1;
         DispatcherTimer timer_sensores;
         DispatcherTimer tim_policia;
-        bool[] sensores_status = new bool[] { false, false, false, false, false };
+        bool[] sensores_status = new bool[] { false, false, false, false };
 
         const int debungTime = 2;
 
@@ -160,15 +160,21 @@ namespace Semáforo
         {
             bool aux_sensor;
 
-            //Console.WriteLine("OLHA RAPOSO CHUPA TU");
+            if (K8055.ReadDigitalChannel(5) || check_Time())
+            {
+                maintence(INTERMITENTE);
+                valores_sensores = K8055.ReadAllDigital();
+                return;
+            }
 
             if (valores_sensores != K8055.ReadAllDigital() && !pawn_ten_flag)
             {
 
                 aux_sensor = false;
 
-                for (int i=1;i < 4; i+=2)
+                for (int i=0;i < 4; i+=2)
                 {
+                    int channel = i + 1;
 
                     if(sensores_status[i] && sensores_status[i + 1])
                     {
@@ -178,36 +184,31 @@ namespace Semáforo
                     Debug.WriteLine("------------");
                     Debug.WriteLine("xp");
 
-                    if (sensores_status[i] != K8055.ReadDigitalChannel(i))
+                    if (sensores_status[i] != K8055.ReadDigitalChannel(channel))
                         sensores_status[i] = !sensores_status[i];
                     
 
-                    if (sensores_status[i + 1] != K8055.ReadDigitalChannel(i+1))
+                    if (sensores_status[i + 1] != K8055.ReadDigitalChannel(channel + 1))
                         sensores_status[i + 1] = !sensores_status[i + 1];
 
 
                     Debug.WriteLine(sensores_status[i]);
                     Debug.WriteLine(sensores_status[i + 1]);
 
-
-                    
-
                     if (sensores_status[i] != sensores_status[i + 1] && !aux_sensor) // Existem carros em 1 dos lados
                     {
                         Debug.WriteLine("45");
 
-                        if (i == 1)
+                        if (i == 0)
                         {
                             //Se estivermos no modo automatico
                             if(mode == 2)
                             {
-
                                 //Abre os automoveis
                                 Debug.WriteLine("Abri os automoveis");
                                 Debug.WriteLine("------------");
                                 if(cycle_flag != 0)
                                     maintence(CAR_PRIORITY);
-
                             }
 
                         }
@@ -229,7 +230,7 @@ namespace Semáforo
                     }
                     else if(!sensores_status[i] && !sensores_status[i+1]) // false/false
                     {
-                        if(i == 1)
+                        if(i == 0)
                         {
 
                             if(mode == 2)
@@ -241,12 +242,11 @@ namespace Semáforo
                                 
                         }
 
-                        if(i == 3)
+                        if(i == 2)
                         {
 
                         }
                     }
-
 
                 }
 
@@ -254,17 +254,16 @@ namespace Semáforo
             }
             else
             {
-                if(cycle_flag != 1)
+                if (cycle_flag != 1)
                 {
 
-                    bool[] false_arr = new bool[] { false, false, false, false, false, false };
+                    bool[] false_arr = new bool[] { false, false, false, false, false };
                     int arr1TrueCount = false_arr.Count(b => b);
                     int arr2TrueCount = sensores_status.Count(b => b);
 
                     // Verificar o meu array
                     if (arr1TrueCount == arr2TrueCount)
                     {
-                        Console.WriteLine("OLHA PEDRO CHUPA TU");
                         maintence(0);
                     }
                 }
@@ -367,7 +366,7 @@ namespace Semáforo
                     K8055.SetDigitalChannel(1);   // Semaphore A --> GREEN
                     K8055.ClearDigitalChannel(8); // Clear the channel
                     K8055.SetDigitalChannel(7);   // Semaphore D --> GREEN
-                    await Task.Delay(10000);
+                    await Task.Delay(6000);
                     pawn_ten_flag = false;
                     break;
 
@@ -389,7 +388,15 @@ namespace Semáforo
                         await Task.Delay(20000);
                     }
                     break;
-
+                case INTERMITENTE:
+                    this.cycle_flag = -1;
+                    K8055.ClearAllDigital();
+                    await Task.Delay(2000);       // Delay of 2
+                    K8055.SetDigitalChannel(5);
+                    K8055.SetDigitalChannel(2);
+                    await Task.Delay(2000);       // Delay of 2
+                    K8055.ClearAllDigital();
+                    break;
                 default:                          // Blink the semaphores A and B, D must have nothing
                     K8055.ClearAllDigital();
                     await Task.Delay(2000);       // Delay of 2
