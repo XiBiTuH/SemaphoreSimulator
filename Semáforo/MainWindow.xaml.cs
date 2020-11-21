@@ -46,6 +46,7 @@ namespace Semáforo
          * When the Flag is equal to 1, the semaphores A and D will be GREEN, B will be RED.
          */
         int cycle_flag = -1;
+        bool pawn_ten_flag = false;
         int mode = 1;   //Default 1
         bool policia = false;
         DispatcherTimer tim;
@@ -53,6 +54,13 @@ namespace Semáforo
         DispatcherTimer timer_sensores;
         DispatcherTimer tim_policia;
         bool[] sensores_status = new bool[] { false, false, false, false, false };
+
+        const int debungTime = 2;
+
+        const int CICLE_DEFAULT = -1;
+        const int PAWN_PRIORITY = 0;
+        const int CAR_PRIORITY = 1;
+        const int INTERMITENTE = 2;
 
 
         public static class K8055
@@ -79,9 +87,6 @@ namespace Semáforo
         // This function will run when the program initiates. ONLY
         public MainWindow()
         {
-
-
-
             //Timer relativamente ao semáforo temporário - corre a cada 20 segundos
             tim = new DispatcherTimer();
             tim.Interval = TimeSpan.FromSeconds(20);
@@ -155,9 +160,9 @@ namespace Semáforo
         {
             bool aux_sensor;
 
-            Console.WriteLine("OLHA RAPOSO CHUPA TU");
+            //Console.WriteLine("OLHA RAPOSO CHUPA TU");
 
-            if (valores_sensores != K8055.ReadAllDigital())
+            if (valores_sensores != K8055.ReadAllDigital() && !pawn_ten_flag)
             {
 
                 aux_sensor = false;
@@ -201,7 +206,7 @@ namespace Semáforo
                                 Debug.WriteLine("Abri os automoveis");
                                 Debug.WriteLine("------------");
                                 if(cycle_flag != 0)
-                                    maintence(1);
+                                    maintence(CAR_PRIORITY);
 
                             }
 
@@ -216,7 +221,7 @@ namespace Semáforo
                             else
                             {
                                 if(cycle_flag != 1)
-                                    maintence(0);
+                                    maintence(PAWN_PRIORITY);
                             }
 
                         }
@@ -231,7 +236,7 @@ namespace Semáforo
                             {
                                 Debug.WriteLine("Fechei os automoveis");
                                 if(cycle_flag != 1)
-                                    maintence(0);
+                                    maintence(PAWN_PRIORITY);
                             }
                                 
                         }
@@ -244,6 +249,8 @@ namespace Semáforo
 
 
                 }
+
+                valores_sensores = K8055.ReadAllDigital();
             }
             else
             {
@@ -263,10 +270,6 @@ namespace Semáforo
                 }
             }
 
-
-
-
-                valores_sensores = K8055.ReadAllDigital();
             }
 
 
@@ -340,7 +343,7 @@ namespace Semáforo
 
             switch (flag)
             {
-                case -1:                          // This is the INITIAL MOMENT!
+                case CICLE_DEFAULT:                          // This is the INITIAL MOMENT!
                     this.cycle_flag = 0;          // Update flag --> 0
                     K8055.SetDigitalChannel(4);   // Semaphore B --> GREEN
                     K8055.SetDigitalChannel(3);   // Semaphore A --> RED
@@ -349,8 +352,9 @@ namespace Semáforo
                     await Task.Delay(5000);
                     break;
 
-                case  0:                          // In this particular case, we need to consider some situations [B IS GREEN | OTHERS ARE RED]
+                case  PAWN_PRIORITY:                          // In this particular case, we need to consider some situations [B IS GREEN | OTHERS ARE RED]
                     this.cycle_flag = 1;          // Update flag --> 1
+                    pawn_ten_flag = true;
                     await Task.Delay(5000);
                     Console.WriteLine("OLHA CHUPAI");
                     K8055.ClearDigitalChannel(4); // Clear the channel
@@ -364,23 +368,26 @@ namespace Semáforo
                     K8055.ClearDigitalChannel(8); // Clear the channel
                     K8055.SetDigitalChannel(7);   // Semaphore D --> GREEN
                     await Task.Delay(10000);
+                    pawn_ten_flag = false;
                     break;
 
-                case  1:                          // In this particular case, we need to consider some situations [B IS RED | OTHERS ARE GREEN]
-                    this.cycle_flag = 0;          // Update flag --> 0
-                    await Task.Delay(5000);
-                    K8055.ClearDigitalChannel(1); // Clear the channel
-                    K8055.SetDigitalChannel(2);   // Turn the semaphore A yellow 
-                    K8055.ClearDigitalChannel(7); // Clear the channel
-                    K8055.SetDigitalChannel(8);   // Turn the semaphore D red
-                    await Task.Delay(2000);       // Delay of 1.2 seconds
-                    K8055.ClearDigitalChannel(2); // Clear the channel
-                    K8055.SetDigitalChannel(3);   // Semaphore A --> RED
-                    await Task.Delay(2000);       // Delay of 1.5 seconds
-                    K8055.ClearDigitalChannel(6); // Clear the channel
-                    K8055.SetDigitalChannel(4);   // Semaphore B --> GREEN
-                    
-                    await Task.Delay(20000);
+                case CAR_PRIORITY:// In this particular case, we need to consider some situations [B IS RED | OTHERS ARE GREEN]
+                    if (pawn_ten_flag == false)
+                    {
+                        this.cycle_flag = 0;          // Update flag --> 0
+                        await Task.Delay(5000);
+                        K8055.ClearDigitalChannel(1); // Clear the channel
+                        K8055.SetDigitalChannel(2);   // Turn the semaphore A yellow 
+                        K8055.ClearDigitalChannel(7); // Clear the channel
+                        K8055.SetDigitalChannel(8);   // Turn the semaphore D red
+                        await Task.Delay(2000);       // Delay of 1.2 seconds
+                        K8055.ClearDigitalChannel(2); // Clear the channel
+                        K8055.SetDigitalChannel(3);   // Semaphore A --> RED
+                        await Task.Delay(2000);       // Delay of 1.5 seconds
+                        K8055.ClearDigitalChannel(6); // Clear the channel
+                        K8055.SetDigitalChannel(4);   // Semaphore B --> GREEN
+                        await Task.Delay(20000);
+                    }
                     break;
 
                 default:                          // Blink the semaphores A and B, D must have nothing
