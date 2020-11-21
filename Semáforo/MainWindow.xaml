@@ -5,20 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Semáforo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid RenderTransformOrigin="0.494,0.535">
+        Title="MainWindow" Height="450" Width="646" ResizeMode="CanResizeWithGrip">
+    <Grid RenderTransformOrigin="0.494,0.535" Margin="0,0,2,0" Width="550">
         <Grid.RowDefinitions>
             <RowDefinition Height="89*"/>
             <RowDefinition Height="330*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="14*"/>
+            <ColumnDefinition Width="431*"/>
+            <ColumnDefinition Width="65*"/>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="131" Stroke="Black" VerticalAlignment="Top" Width="57" Grid.Column="1" Margin="824,148,-89,0" Grid.Row="1"/>
+        <Rectangle Fill="#FF1F2120" HorizontalAlignment="Left" Height="28" Stroke="Black" VerticalAlignment="Top" Width="14" Grid.Column="3" Margin="318,217,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
 
-        <Button Content="&#xA;Normal&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Width="128" Margin="22,2,0,0" Click="Button_Click" Height="91" Grid.Column="1" Grid.Row="1" FontSize="18" FontWeight="Bold"/>
-        <Button Content="Automático" HorizontalAlignment="Left" VerticalAlignment="Top" Width="128" Margin="643,2,0,0" Click="Button_Click_3" Height="91" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="1" FontSize="18" FontWeight="Bold">
+        <Button Content="&#xA;Normal&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Width="128" Margin="368,0,0,0" Click="Button_Click" Height="91" Grid.Column="3" FontSize="18" FontWeight="Bold" Grid.ColumnSpan="2" Grid.Row="1"/>
+        <Button Content="Automático" HorizontalAlignment="Left" VerticalAlignment="Top" Width="128" Margin="369,97,-1,0" Click="Button_Click_3" Height="91" RenderTransformOrigin="0.5,0.5" Grid.Column="3" Grid.Row="1" FontSize="18" FontWeight="Bold" Grid.ColumnSpan="4">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -28,89 +42,316 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="206,10,0,0" Height="124" Width="408" FontSize="36" FontWeight="Bold" Grid.RowSpan="2"><Run Text="Semáforo "/><Run Text="Inteligente"/></TextBlock>
-        <Ellipse x:Name="A_vermelho" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="18" Stroke="Black" VerticalAlignment="Top" Width="20" Grid.Column="1" Margin="843,169,-71,0" Grid.Row="1"/>
-        <Ellipse x:Name="A_amarelo" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="18" Stroke="Black" VerticalAlignment="Top" Width="20" Grid.Column="1" Margin="843,205,-71,0" RenderTransformOrigin="0.651,2.914" Grid.Row="1"/>
-        <Ellipse x:Name="A_verde" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="18" Stroke="Black" VerticalAlignment="Top" Width="20" Grid.Column="1" Margin="843,240,-71,0" RenderTransformOrigin="0.651,2.914" Grid.Row="1"/>
-        <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="A" VerticalAlignment="Top" Margin="847,116,-69,0" FontWeight="Bold" FontStyle="Italic" FontSize="20" Grid.Row="1" Height="27" Width="14"/>
-        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="131" Stroke="Black" VerticalAlignment="Top" Width="57" Grid.Column="1" Margin="984,148,-249,0" Grid.Row="1"/>
-        <Ellipse x:Name="B_vermelho" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="18" Stroke="Black" VerticalAlignment="Top" Width="20" Grid.Column="1" Margin="1003,169,-231,0" Grid.Row="1"/>
-        <Ellipse x:Name="B_amarelo" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="18" Stroke="Black" VerticalAlignment="Top" Width="20" Grid.Column="1" Margin="1003,205,-231,0" RenderTransformOrigin="0.651,2.914" Grid.Row="1"/>
-        <Ellipse x:Name="B_verde" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="18" Stroke="Black" VerticalAlignment="Top" Width="20" Grid.Column="1" Margin="1003,240,-231,0" RenderTransformOrigin="0.651,2.914" Grid.Row="1"/>
-        <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="B" VerticalAlignment="Top" Margin="1007,116,-229,0" FontWeight="Bold" FontStyle="Italic" FontSize="20" Grid.Row="1" Height="27" Width="14"/>
-        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="131" Stroke="Black" VerticalAlignment="Top" Width="57" Grid.Column="1" Margin="1140,148,-405,0" Grid.Row="1"/>
-        <Ellipse x:Name="D_vermelho" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="18" Stroke="Black" VerticalAlignment="Top" Width="20" Grid.Column="1" Margin="1159,185,-387,0" Grid.Row="1"/>
-        <Ellipse x:Name="D_verde" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="18" Stroke="Black" VerticalAlignment="Top" Width="20" Grid.Column="1" Margin="1159,221,-387,0" RenderTransformOrigin="0.651,2.914" Grid.Row="1"/>
-        <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="1162,116,-384,0" FontWeight="Bold" FontStyle="Italic" FontSize="20" Grid.Row="1" Height="27" Width="14"><Run Text="D"/><LineBreak/><Run/></TextBlock>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="133" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="362,10,0,0" Grid.Row="1"/>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="328" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="399,0,0,0" Grid.Row="1"/>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="142" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="363,185,0,0" Grid.Row="1"/>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="193" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="560,46,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5">
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="3" Margin="45,4,0,0" Height="124" Width="408" FontSize="36" FontWeight="Bold" Grid.RowSpan="2" Grid.ColumnSpan="2"><Run Text="Semáforo "/><Run Text="Inteligente"/></TextBlock>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="310" Stroke="Black" VerticalAlignment="Top" Width="6" Margin="303,4,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
             <Rectangle.RenderTransform>
                 <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-89.621"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Rectangle.RenderTransform>
-        </Rectangle>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="193" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="267,46,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5">
-            <Rectangle.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-89.621"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Rectangle.RenderTransform>
-        </Rectangle>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="193" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="561,88,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5">
-            <Rectangle.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-89.621"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Rectangle.RenderTransform>
-        </Rectangle>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="193" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="267,88,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5">
-            <Rectangle.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-89.621"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Rectangle.RenderTransform>
-        </Rectangle>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="380,217,0,0" Grid.Row="1"/>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="407,217,0,0" Grid.Row="1"/>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="371,217,0,0" Grid.Row="1"/>
-        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="48" Stroke="Black" VerticalAlignment="Top" Width="17" Grid.Column="1" Margin="337,74,0,0" Grid.Row="1"/>
-        <Ellipse x:Name="B_vermelho_Copy" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="1" Margin="343,82,0,0" Grid.Row="1"/>
-        <Ellipse x:Name="B_amarelo_Copy" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="1" Margin="343,95,0,0" RenderTransformOrigin="0.651,2.914" Grid.Row="1"/>
-        <Ellipse x:Name="B_verde_Copy" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="1" Margin="343,108,0,0" RenderTransformOrigin="0.651,2.914" Grid.Row="1"/>
-        <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="B" VerticalAlignment="Top" Margin="337,40,0,0" FontWeight="Bold" FontStyle="Italic" FontSize="20" Grid.Row="1" Height="35" Width="31" RenderTransformOrigin="0.5,0.5">
-            <TextBlock.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleY="-1"/>
+                    <ScaleTransform ScaleX="-1"/>
                     <SkewTransform/>
                     <RotateTransform/>
                     <TranslateTransform/>
                 </TransformGroup>
-            </TextBlock.RenderTransform>
-        </TextBlock>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="143" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="465,185,0,0" Grid.Row="1"/>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="133" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="464,10,0,0" Grid.Row="1"/>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="390,217,0,0" Grid.Row="1"/>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="416,217,0,0" Grid.Row="1"/>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="425,217,0,0" Grid.Row="1"/>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="434,217,0,0" Grid.Row="1"/>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="443,217,0,0" Grid.Row="1"/>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="450,217,0,0" Grid.Row="1"/>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="Black" VerticalAlignment="Top" Width="3" Margin="458,217,0,0" Grid.Row="1"/>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Ellipse x:Name="B_vermelho_Copy2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="314,255,0,0" Grid.Row="1"/>
+        <Ellipse x:Name="B_vermelho_Copy3" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="314,265,0,0" Grid.Row="1"/>
+        <Rectangle Fill="#FF4B4B4A" HorizontalAlignment="Left" Height="310" Margin="204,4,0,0" Grid.Row="1" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="100" Grid.Column="3"/>
+        <Rectangle Fill="#FF4B4B4A" HorizontalAlignment="Left" Height="193" Margin="90,26,0,0" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="41" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.Column="3">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="98" Stroke="Black" VerticalAlignment="Top" Width="6" Margin="199,4,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.503"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="171" Stroke="Black" VerticalAlignment="Top" Width="6" Margin="199,143,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="Black" VerticalAlignment="Top" Width="4" Margin="219,234,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFFFFDFD" HorizontalAlignment="Left" Height="29" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="4" Margin="219,234,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="4" Margin="227,234,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="4" Margin="210,234,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="4" Margin="235,234,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="4" Margin="243,234,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="4" Margin="251,234,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="4" Margin="258,234,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="4" Margin="266,234,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="4" Margin="273,234,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="4" Margin="280,234,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="4" Margin="287,234,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="29" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="4" Margin="294,234,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="136" Stroke="White" VerticalAlignment="Top" Width="1" Margin="206,178,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="White" HorizontalAlignment="Left" Height="310" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="3" Margin="300,4,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="101" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="3" Margin="205,4,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="186" Stroke="Black" VerticalAlignment="Top" Width="6" Margin="104,53,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="189" Stroke="White" VerticalAlignment="Top" Width="1" Margin="111,9,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="186" Stroke="Black" VerticalAlignment="Top" Width="6" Margin="104,6,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="174" Stroke="White" VerticalAlignment="Top" Width="1" Margin="206,140,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="191" Stroke="White" VerticalAlignment="Top" Width="1" Margin="111,45,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="97" Stroke="White" VerticalAlignment="Top" Width="1" Margin="255,6,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="180.234"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="59" Stroke="White" VerticalAlignment="Top" Width="1" Margin="271,264,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="180.234"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="White" HorizontalAlignment="Left" Height="30" Stroke="White" VerticalAlignment="Top" Width="8" Margin="283,253,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="7" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="3" Margin="238,268,0,0" Grid.Row="1" RenderTransformOrigin="1.688,2.929" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="7" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="3" Margin="238,277,0,0" Grid.Row="1" RenderTransformOrigin="1.688,2.929" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="7" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="3" Margin="238,286,0,0" Grid.Row="1" RenderTransformOrigin="1.688,2.929" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="52" Stroke="White" VerticalAlignment="Top" Width="1" Margin="239,141,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="180.234"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="16" Stroke="White" VerticalAlignment="Top" Width="1" Margin="271,214,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="180.234"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="39" Stroke="White" VerticalAlignment="Top" Width="1" Margin="255,184,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="123.864"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle Fill="#FF1F2120" HorizontalAlignment="Left" Height="28" Stroke="Black" VerticalAlignment="Top" Width="14" Grid.Column="3" Margin="310,251,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.122"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Ellipse x:Name="B_vermelho_Copy" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="314,255,0,0" Grid.Row="1" RenderTransformOrigin="0.5,-0.042"/>
+        <Ellipse x:Name="B_vermelho_Copy4" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="314,263,0,0" Grid.Row="1"/>
+        <Ellipse x:Name="B_vermelho_Copy5" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="314,271,0,0" Grid.Row="1"/>
+        <Rectangle Fill="#FF1F2120" HorizontalAlignment="Left" Height="21" Stroke="Black" VerticalAlignment="Top" Width="14" Grid.Column="3" Margin="228,119,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.122"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Ellipse x:Name="B_vermelho_Copy7" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="232,122,0,0" Grid.Row="1" RenderTransformOrigin="-0.167,5.056"/>
+        <Ellipse x:Name="B_vermelho_Copy8" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="232,131,0,0" Grid.Row="1"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="8" Stroke="Black" VerticalAlignment="Top" Width="1" Margin="235,140,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="7" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="3" Margin="270,202,0,0" Grid.Row="1" RenderTransformOrigin="1.688,2.929" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="3" Margin="270,193,0,0" Grid.Row="1" RenderTransformOrigin="1.688,2.929" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="3" Margin="270,184,0,0" Grid.Row="1" RenderTransformOrigin="1.688,2.929" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="3" Margin="270,175,0,0" Grid.Row="1" RenderTransformOrigin="1.688,2.929" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="3" Margin="270,167,0,0" Grid.Row="1" RenderTransformOrigin="1.688,2.929" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="3" Margin="270,159,0,0" Grid.Row="1" RenderTransformOrigin="1.688,2.929" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="3" Margin="270,151,0,0" Grid.Row="1" RenderTransformOrigin="1.688,2.929" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="8" Stroke="Black" VerticalAlignment="Top" Width="1" Margin="317,279,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Ellipse x:Name="B_vermelho_Copy1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="187,59,0,0" Grid.Row="1"/>
+        <Ellipse x:Name="B_vermelho_Copy6" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="187,69,0,0" Grid.Row="1"/>
+        <Rectangle Fill="#FF1F2120" HorizontalAlignment="Left" Height="28" Stroke="Black" VerticalAlignment="Top" Width="14" Grid.Column="3" Margin="183,55,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.122"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Ellipse x:Name="B_vermelho_Copy9" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="187,59,0,0" Grid.Row="1" RenderTransformOrigin="0.5,-0.042"/>
+        <Ellipse x:Name="B_vermelho_Copy10" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="187,67,0,0" Grid.Row="1"/>
+        <Ellipse x:Name="B_vermelho_Copy11" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="187,75,0,0" Grid.Row="1"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="8" Stroke="Black" VerticalAlignment="Top" Width="1" Margin="190,83,0,0" Grid.Row="1" Grid.Column="3"/>
+        <Ellipse x:Name="B_vermelho_Copy12" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="330,228,0,0" Grid.Row="1" RenderTransformOrigin="0.167,-4.667">
+            <Ellipse.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform X="33" Y="29.004"/>
+                </TransformGroup>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse x:Name="B_vermelho_Copy13" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="322,228,0,0" Grid.Row="1" RenderTransformOrigin="-0.056,-8.056">
+            <Ellipse.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform X="54.672" Y="48"/>
+                </TransformGroup>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse x:Name="B_vermelho_Copy16" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="314,228,0,0" Grid.Row="1" RenderTransformOrigin="-3.389,-1.389">
+            <Ellipse.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform X="34.668" Y="-12"/>
+                </TransformGroup>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Rectangle Fill="#FF1F2120" HorizontalAlignment="Left" Height="28" Stroke="Black" VerticalAlignment="Top" Width="14" Grid.Column="3" Margin="176,247,0,0" Grid.Row="1" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Ellipse x:Name="B_vermelho_Copy14" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="188,258,0,0" Grid.Row="1" RenderTransformOrigin="0.167,-4.667">
+            <Ellipse.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform X="33" Y="29.004"/>
+                </TransformGroup>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse x:Name="B_vermelho_Copy15" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="180,258,0,0" Grid.Row="1" RenderTransformOrigin="-0.056,-8.056">
+            <Ellipse.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform X="54.672" Y="48"/>
+                </TransformGroup>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse x:Name="B_vermelho_Copy17" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="6" Stroke="Black" VerticalAlignment="Top" Width="6" Grid.Column="3" Margin="172,258,0,0" Grid.Row="1" RenderTransformOrigin="-3.389,-1.389">
+            <Ellipse.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform X="34.668" Y="-12"/>
+                </TransformGroup>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <Label Content="B" HorizontalAlignment="Left" Margin="165,49,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="3" Height="26" Width="17"/>
+        <Label Content="B" HorizontalAlignment="Left" Margin="165,49,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="3" Height="26" Width="17"/>
+        <Label Content="B" HorizontalAlignment="Left" Margin="325,265,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="3" Height="26" Width="17"/>
+        <Label Content="A" HorizontalAlignment="Left" Margin="342,207,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="3" Height="26" Width="9"/>
+        <Label Content="A" HorizontalAlignment="Left" Margin="153,261,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="3" Height="26" Width="18"/>
+        <Label Content="D" HorizontalAlignment="Left" Margin="238,122,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="-0.847,0.885" Grid.Column="3" Height="26" Width="18"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="7" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="3" Margin="238,295,0,0" Grid.Row="1" RenderTransformOrigin="1.688,2.929" Grid.Column="3"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="7" Stroke="#FF4B4B4A" VerticalAlignment="Top" Width="3" Margin="238,304,0,0" Grid.Row="1" RenderTransformOrigin="1.688,2.929" Grid.Column="3"/>
 
     </Grid>
 </Window>

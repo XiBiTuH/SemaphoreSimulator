@@ -275,7 +275,7 @@ namespace Semáforo
                     K8055.ClearAllDigital();
                     this.cycle_flag = 0;          // Update flag --> 0
                     K8055.SetDigitalChannel(4);   // Semaphore B --> GREEN
-                    A_vermelho.Fill = new SolidColorBrush(Colors.Red);
+                    //A_vermelho.Fill = new SolidColorBrush(Colors.Red);
                     K8055.SetDigitalChannel(3);   // Semaphore A --> RED
                     K8055.SetDigitalChannel(8);   // Semaphore D --> 
                     await Task.Delay(5000);
