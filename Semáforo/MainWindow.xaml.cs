@@ -87,31 +87,12 @@ namespace Semáforo
         // This function will run when the program initiates. ONLY
         public MainWindow()
         {
-            //Timer relativamente ao semáforo temporário - corre a cada 20 segundos
-            tim = new DispatcherTimer();
-            tim.Interval = TimeSpan.FromSeconds(20);
-            tim.Tick += semaforo_temporario;
-            //tim.Start();
-            
-
-            //Timer relativamente á policia - Intermitente
-            tim_policia = new DispatcherTimer();
-            tim_policia.Interval = TimeSpan.FromSeconds(4);
-            tim_policia.Tick += policia_intermitente;
-
-
-
-            //Timer que está sempre a verificar as horas - corre a cada segundo
-            DispatcherTimer timer_verificar_horas = new DispatcherTimer();
-            timer_verificar_horas.Interval = TimeSpan.FromSeconds(1);
-            timer_verificar_horas.Tick += verifica_horas;
-            timer_verificar_horas.Start();
 
 
 
             //Verifica se houve alguma alteração nos sensores
             timer_sensores = new DispatcherTimer();
-            timer_sensores.Interval = TimeSpan.FromSeconds(5);
+            timer_sensores.Interval = TimeSpan.FromSeconds(15);
             timer_sensores.Tick += sensores;
             timer_sensores.Start();
 
@@ -132,210 +113,158 @@ namespace Semáforo
 
 
 
-        /*
-                            //Caso já esteja verde para os peoes
-                            if (this.cycle_flag != 1)
-                            
-                                tim.Interval = TimeSpan.FromSeconds(5);
-
-                                this.cycle_flag = 0;
-
-                            }
-
-                            if (mode == 2)
-                            {
-                                timer_sensores.Stop();
-                                maintence(0);
-                                timer_sensores.Start();
-                                valores_sensores = 0;
-                            }
-
-
-                            break;
-                            */
-
-
         //Listener dos sensores
         private void sensores(object sender, EventArgs e)
         {
-            bool aux_sensor;
 
-            if (K8055.ReadDigitalChannel(5) || check_Time())
+
+
+            //Modo Normal
+            if (mode == 1)
             {
-                maintence(INTERMITENTE);
-                valores_sensores = K8055.ReadAllDigital();
-                return;
-            }
-
-            if (valores_sensores != K8055.ReadAllDigital() && !pawn_ten_flag)
-            {
-
-                aux_sensor = false;
-
-                for (int i=0;i < 4; i+=2)
+                if (K8055.ReadDigitalChannel(5) || check_Time())
                 {
-                    int channel = i + 1;
-
-                    if(sensores_status[i] && sensores_status[i + 1])
-                    {
-                        aux_sensor = true;
-                    }
-
-                    Debug.WriteLine("------------");
-                    Debug.WriteLine("xp");
-
-                    if (sensores_status[i] != K8055.ReadDigitalChannel(channel))
-                        sensores_status[i] = !sensores_status[i];
+                    timer_sensores.Interval = TimeSpan.FromSeconds(4);
+                    maintence(INTERMITENTE);
                     
-
-                    if (sensores_status[i + 1] != K8055.ReadDigitalChannel(channel + 1))
-                        sensores_status[i + 1] = !sensores_status[i + 1];
+                }
 
 
-                    Debug.WriteLine(sensores_status[i]);
-                    Debug.WriteLine(sensores_status[i + 1]);
-
-                    if (sensores_status[i] != sensores_status[i + 1] && !aux_sensor) // Existem carros em 1 dos lados
-                    {
-                        Debug.WriteLine("45");
-
-                        if (i == 0)
-                        {
-                            //Se estivermos no modo automatico
-                            if(mode == 2)
-                            {
-                                //Abre os automoveis
-                                Debug.WriteLine("Abri os automoveis");
-                                Debug.WriteLine("------------");
-                                if(cycle_flag != 0)
-                                    maintence(CAR_PRIORITY);
-                            }
-
-                        }
-                        else
-                        {
-                            //Abre os peões
-                            if(mode == 1)
-                            {
-
-                            }
-                            else
-                            {
-                                if(cycle_flag != 1)
-                                    maintence(PAWN_PRIORITY);
-                            }
-
-                        }
-
-                    }
-                    else if(!sensores_status[i] && !sensores_status[i+1]) // false/false
-                    {
-                        if(i == 0)
-                        {
-
-                            if(mode == 2)
-                            {
-                                Debug.WriteLine("Fechei os automoveis");
-                                if(cycle_flag != 1)
-                                    maintence(PAWN_PRIORITY);
-                            }
-                                
-                        }
-
-                        if(i == 2)
-                        {
-
-                        }
-                    }
+                else
+                {
+                    maintence(this.cycle_flag);
+                    timer_sensores.Interval = TimeSpan.FromSeconds(15);
 
                 }
 
-                valores_sensores = K8055.ReadAllDigital();
+                
             }
-            else
-            {
-                if (cycle_flag != 1)
+
+
+            //Modo do sensor
+            else { 
+
+            
+
+                bool aux_sensor;
+
+                if (K8055.ReadDigitalChannel(5) || check_Time())
                 {
-
-                    bool[] false_arr = new bool[] { false, false, false, false, false };
-                    int arr1TrueCount = false_arr.Count(b => b);
-                    int arr2TrueCount = sensores_status.Count(b => b);
-
-                    // Verificar o meu array
-                    if (arr1TrueCount == arr2TrueCount)
-                    {
-                        maintence(0);
-                    }
+                    maintence(INTERMITENTE);
+                    valores_sensores = K8055.ReadAllDigital();
+                    return;
                 }
-            }
 
-            }
-
-
-
-
-
-            /*
-            //Verificar se houve alteração nos sensores
-            if (valores_sensores != K8055.ReadAllDigital())
-            {
-                switch (K8055.ReadAllDigital())
+                if (valores_sensores != K8055.ReadAllDigital() && !pawn_ten_flag)
                 {
 
-                    //Meter os peoões com prioridade ( Nenhum carro )
-                    case 0:
-                        if (this.cycle_flag != 1)
+
+                        aux_sensor = false;
+
+                        for (int i = 0; i < 4; i += 2)
+                        {
+                            int channel = i + 1;
+
+                            if (sensores_status[i] && sensores_status[i + 1])
+                            {
+                                aux_sensor = true;
+                            }
+
+
+                            if (sensores_status[i] != K8055.ReadDigitalChannel(channel))
+                                sensores_status[i] = !sensores_status[i];
+
+
+                            if (sensores_status[i + 1] != K8055.ReadDigitalChannel(channel + 1))
+                                sensores_status[i + 1] = !sensores_status[i + 1];
+
+
+                            Debug.WriteLine(sensores_status[i]);
+                            Debug.WriteLine(sensores_status[i + 1]);
+
+                            if (sensores_status[i] != sensores_status[i + 1] && !aux_sensor) // Existem carros em 1 dos lados
+                            {
+
+
+                                if (i == 0)
+                                {
+                                    //Se estivermos no modo automatico
+                                    if (mode == 2)
+                                    {
+                                        //Abre os automoveis
+
+                                        if (cycle_flag != 0)
+                                            maintence(CAR_PRIORITY);
+                                    }
+
+                                }
+                                else
+                                {
+                                    //Abre os peões
+                                    if (mode == 1)
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        if (cycle_flag != 1)
+                                            maintence(PAWN_PRIORITY);
+                                    }
+
+                                }
+
+                            }
+                            else if (!sensores_status[i] && !sensores_status[i + 1]) // false/false
+                            {
+                                if (i == 0)
+                                {
+
+                                    if (mode == 2)
+                                    {
+                                        if (cycle_flag != 1)
+                                            maintence(PAWN_PRIORITY);
+                                    }
+
+                                }
+
+                                if (i == 2)
+                                {
+
+                                }
+                            }
+
+                        }
+
+                        valores_sensores = K8055.ReadAllDigital();
+
+
+                
+
+
+
+                }
+                else
+                {
+                    if (cycle_flag != 1)
+                    {
+
+                        bool[] false_arr = new bool[] { false, false, false, false, false };
+                        int arr1TrueCount = false_arr.Count(b => b);
+                        int arr2TrueCount = sensores_status.Count(b => b);
+
+                        // Verificar o meu array
+                        if (arr1TrueCount == arr2TrueCount)
                         {
                             maintence(0);
                         }
-                        this.cycle_flag = 0;
-                        break;
-
-
-                      
-                    //Meter o sinal B verde para os automoveis
-                    case 1:
-                    case 2:
-                    case 3:
-
-                        
-                        if(valores_sensores == 0)
-                        {
-                            maintence(1);
-                        }
-                        this.cycle_flag = 1;
-                        break;
+                    }
+                }
 
                 }
-                valores_sensores = K8055.ReadAllDigital();
-            }
-            
-
-        }*/
-
-        
-        //Verificamos as horas
-        private void verifica_horas(object sender, EventArgs e)
-        {
-
-            
-        }
-
-
-        //Every 20 seconds this function occurs
-        private void semaforo_temporario(object sender, EventArgs e)
-        {
-            if (mode == 1)
-            {
-                maintence(this.cycle_flag);
-            }
 
         }
 
 
-        /*
-         * 
-         */
         public async void maintence(int flag)
         {
            // tim.Interval = TimeSpan.FromSeconds(20);
@@ -343,11 +272,11 @@ namespace Semáforo
             switch (flag)
             {
                 case CICLE_DEFAULT:                          // This is the INITIAL MOMENT!
+                    K8055.ClearAllDigital();
                     this.cycle_flag = 0;          // Update flag --> 0
                     K8055.SetDigitalChannel(4);   // Semaphore B --> GREEN
                     K8055.SetDigitalChannel(3);   // Semaphore A --> RED
-                    K8055.SetDigitalChannel(8);   // Semaphore D --> RED
-                    
+                    K8055.SetDigitalChannel(8);   // Semaphore D --> 
                     await Task.Delay(5000);
                     break;
 
@@ -355,7 +284,6 @@ namespace Semáforo
                     this.cycle_flag = 1;          // Update flag --> 1
                     pawn_ten_flag = true;
                     await Task.Delay(5000);
-                    Console.WriteLine("OLHA CHUPAI");
                     K8055.ClearDigitalChannel(4); // Clear the channel
                     K8055.SetDigitalChannel(5);   // Turn the semaphore B yellow, the others stay RED
                     await Task.Delay(2000);       // Delay of 1.2 seconds
@@ -366,7 +294,16 @@ namespace Semáforo
                     K8055.SetDigitalChannel(1);   // Semaphore A --> GREEN
                     K8055.ClearDigitalChannel(8); // Clear the channel
                     K8055.SetDigitalChannel(7);   // Semaphore D --> GREEN
-                    await Task.Delay(6000);
+                    if (mode == 2)
+                    {
+                        await Task.Delay(6000);
+                    }
+                    else
+                    {
+                        await Task.Delay(15000);
+                    }
+
+                    
                     pawn_ten_flag = false;
                     break;
 
@@ -385,7 +322,7 @@ namespace Semáforo
                         await Task.Delay(2000);       // Delay of 1.5 seconds
                         K8055.ClearDigitalChannel(6); // Clear the channel
                         K8055.SetDigitalChannel(4);   // Semaphore B --> GREEN
-                        await Task.Delay(20000);
+                        await Task.Delay(15000);
                     }
                     break;
                 case INTERMITENTE:
@@ -395,7 +332,8 @@ namespace Semáforo
                     K8055.SetDigitalChannel(5);
                     K8055.SetDigitalChannel(2);
                     await Task.Delay(2000);       // Delay of 2
-                    K8055.ClearAllDigital();
+                    if(K8055.ReadDigitalChannel(5))
+                        K8055.ClearAllDigital();
                     break;
                 default:                          // Blink the semaphores A and B, D must have nothing
                     K8055.ClearAllDigital();
@@ -424,74 +362,19 @@ namespace Semáforo
         {
             //K8055.CloseDevice(); //Closes communication with the K8055
             mode = 1;
-            tim.Start();
-            timer_sensores.Stop();
+            timer_sensores.Interval = TimeSpan.FromSeconds(15);
         }
 
         
-        //Botão da policia
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-
-            policia = !policia;
-
-            //Fica intermitente
-            if (policia)
-            {
-                tim_policia.Start();
-                maintence(2);
-                timer_sensores.Stop();
-                tim.Stop();
 
 
-            }
-
-            //Caso o botão seja desligado
-            else
-            {
-                
-                tim_policia.Stop();
-                await Task.Delay(4000);
-
-
-                if (mode == 1)
-                {
-                    maintence(-1);
-                    tim.Start();
-                    
-                }
-
-                else
-                {
-                    maintence(-1);
-                    timer_sensores.Start();
-                    valores_sensores = -2;
-
-                }
-            }
-    
-
-
-        }
-
-
-        //Botão de Peão
-        private async void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-
-            
-
-            
-
-            
-        }
 
 
         //Botõ de Modo Automático
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             mode = 2;
-            timer_sensores.Start();
+            timer_sensores.Interval = TimeSpan.FromSeconds(5);
             //tim.Stop();
             //maintence(0);
 
