@@ -63,6 +63,20 @@ namespace Semáforo
         const int INTERMITENTE = 2;
 
 
+
+        //Colors
+
+          SolidColorBrush verde = null;
+
+          SolidColorBrush vermelho = null;
+
+          SolidColorBrush amarelo = null;
+
+          SolidColorBrush branco = null;
+
+
+
+
         public static class K8055
         {
             [DllImport("K8055D.dll")]
@@ -88,7 +102,13 @@ namespace Semáforo
         public MainWindow()
         {
 
+            this.verde = new SolidColorBrush(Colors.Green);
 
+            this.vermelho = new SolidColorBrush(Colors.Red);
+
+            this.amarelo = new SolidColorBrush(Colors.Orange);
+
+            this.branco = new SolidColorBrush(Colors.White);
 
             //Verifica se houve alguma alteração nos sensores
             timer_sensores = new DispatcherTimer();
@@ -265,6 +285,28 @@ namespace Semáforo
         }
 
 
+        private void clearAllSemaphores()
+        {
+            B_verde_1.Fill = branco;
+            B_verde_2.Fill = branco;
+            B_vermelho_1.Fill = branco;
+            B_vermelho_2.Fill = branco;
+            B_amarelo_1.Fill = branco;
+            B_amarelo_2.Fill = branco;
+
+            A_verde_1.Fill = branco;
+            A_verde_2.Fill = branco;
+            A_vermelho_1.Fill = branco;
+            A_vermelho_2.Fill = branco;
+            A_amarelo_1.Fill = branco;
+            A_amarelo_2.Fill = branco;
+
+            D_verde.Fill = branco;
+            D_vermelho.Fill = branco;
+
+
+        }
+
         public async void maintence(int flag)
         {
            // tim.Interval = TimeSpan.FromSeconds(20);
@@ -273,11 +315,18 @@ namespace Semáforo
             {
                 case CICLE_DEFAULT:                          // This is the INITIAL MOMENT!
                     K8055.ClearAllDigital();
+                    clearAllSemaphores();
                     this.cycle_flag = 0;          // Update flag --> 0
+
                     K8055.SetDigitalChannel(4);   // Semaphore B --> GREEN
-                    //A_vermelho.Fill = new SolidColorBrush(Colors.Red);
+                    B_verde_1.Fill = B_verde_2.Fill = verde;
+
                     K8055.SetDigitalChannel(3);   // Semaphore A --> RED
-                    K8055.SetDigitalChannel(8);   // Semaphore D --> 
+                    A_vermelho_1.Fill = A_vermelho_2.Fill = vermelho;
+
+                    K8055.SetDigitalChannel(8);   // Semaphore D --> RED
+                    D_vermelho.Fill = vermelho;
+
                     await Task.Delay(5000);
                     break;
 
@@ -286,15 +335,31 @@ namespace Semáforo
                     pawn_ten_flag = true;
                     await Task.Delay(5000);
                     K8055.ClearDigitalChannel(4); // Clear the channel
+                    B_verde_1.Fill = B_verde_2.Fill = branco;
+
                     K8055.SetDigitalChannel(5);   // Turn the semaphore B yellow, the others stay RED
+                    B_amarelo_1.Fill = B_amarelo_2.Fill = amarelo;
+
                     await Task.Delay(2000);       // Delay of 1.2 seconds
                     K8055.ClearDigitalChannel(5); // Clear the channel 
+                    B_amarelo_2.Fill = B_amarelo_1.Fill = branco;
+                    
                     K8055.SetDigitalChannel(6);   // Turn the semaphore B RED, the others stay RED
+                    B_vermelho_1.Fill = B_vermelho_2.Fill = vermelho;
+
                     await Task.Delay(2000);       // Delay of 1.5 seconds
+
                     K8055.ClearDigitalChannel(3); // Clear the channel
+                    A_vermelho_1.Fill = A_vermelho_2.Fill = branco;
+
                     K8055.SetDigitalChannel(1);   // Semaphore A --> GREEN
+                    A_verde_1.Fill = A_verde_2.Fill = verde;
+
                     K8055.ClearDigitalChannel(8); // Clear the channel
+                    D_vermelho.Fill = branco;
+
                     K8055.SetDigitalChannel(7);   // Semaphore D --> GREEN
+                    D_verde.Fill = verde;
                     if (mode == 2)
                     {
                         await Task.Delay(6000);
@@ -313,29 +378,56 @@ namespace Semáforo
                     {
                         this.cycle_flag = 0;          // Update flag --> 0
                         await Task.Delay(5000);
+
                         K8055.ClearDigitalChannel(1); // Clear the channel
+                        A_verde_1.Fill = A_verde_2.Fill = branco;
+
                         K8055.SetDigitalChannel(2);   // Turn the semaphore A yellow 
+                        A_amarelo_1.Fill = A_amarelo_2.Fill = amarelo;
+
                         K8055.ClearDigitalChannel(7); // Clear the channel
+                        D_verde.Fill = branco;
+
                         K8055.SetDigitalChannel(8);   // Turn the semaphore D red
+                        D_vermelho.Fill = vermelho;
+
                         await Task.Delay(2000);       // Delay of 1.2 seconds
+
                         K8055.ClearDigitalChannel(2); // Clear the channel
+                        A_amarelo_1.Fill = A_amarelo_2.Fill = branco;
+
                         K8055.SetDigitalChannel(3);   // Semaphore A --> RED
+                        A_vermelho_1.Fill = A_vermelho_2.Fill = vermelho;
+
                         await Task.Delay(2000);       // Delay of 1.5 seconds
+
                         K8055.ClearDigitalChannel(6); // Clear the channel
+                        B_vermelho_1.Fill = B_vermelho_2.Fill = branco;
+
                         K8055.SetDigitalChannel(4);   // Semaphore B --> GREEN
+                        B_verde_1.Fill = B_verde_2.Fill = verde;
                         await Task.Delay(15000);
                     }
                     break;
                 case INTERMITENTE:
                     this.cycle_flag = -1;
                     K8055.ClearAllDigital();
+                    clearAllSemaphores();
+
                     await Task.Delay(2000);       // Delay of 2
                     K8055.SetDigitalChannel(5);
+                    B_amarelo_1.Fill = B_amarelo_2.Fill = amarelo;
+
                     K8055.SetDigitalChannel(2);
+                    A_amarelo_1.Fill = A_amarelo_2.Fill = amarelo;
+
                     await Task.Delay(2000);       // Delay of 2
-                    if(K8055.ReadDigitalChannel(5))
+
+                    if (K8055.ReadDigitalChannel(5))
+                        clearAllSemaphores();
                         K8055.ClearAllDigital();
                     break;
+
                 default:                          // Blink the semaphores A and B, D must have nothing
                     K8055.ClearAllDigital();
                     await Task.Delay(2000);       // Delay of 2
